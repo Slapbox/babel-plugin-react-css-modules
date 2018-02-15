@@ -66,9 +66,15 @@ const getTokens = (runner, cssSourceFilePath: string, filetypeOptions: ?Filetype
   if (filetypeOptions) {
     options.syntax = getSyntax(filetypeOptions);
   }
+  
+  const postcssEasyImportOptions = {
+    plugins: ["postcss-easy-import"],
+    syntax: "postcss-scss"
+  }
 
-  const lazyResult = runner
-    .process(readFileSync(cssSourceFilePath, 'utf-8'), options);
+  let lazyResult = runner
+    .process(readFileSync(cssSourceFilePath, 'utf-8'), postcssEasyImportOptions)
+    .then(cb, options)
 
   lazyResult
     .warnings()
